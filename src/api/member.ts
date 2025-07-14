@@ -29,4 +29,18 @@ export async function logOut() {
   });
   if (!res.ok) throw new Error('로그아웃 실패');
   return res.json();
+}
+
+export async function checkEmail(email: string) {
+  const res = await fetch(`${API_URL}/check-email/${encodeURIComponent(email)}`);
+  if (!res.ok) throw new Error('이메일 중복 검사 실패');
+  const data = await res.json();
+  return data.data as boolean;
+}
+
+export async function checkNickname(nickname: string) {
+  const res = await fetch(`${API_URL}/check-nickname/${encodeURIComponent(nickname)}`);
+  if (!res.ok) throw new Error('닉네임 중복 검사 실패');
+  const data = await res.json();
+  return data.data as boolean;
 } 

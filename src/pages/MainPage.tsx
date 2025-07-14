@@ -1,4 +1,5 @@
 import Header from '../components/Header';
+import DiaryList from '../components/DiaryList';
 
 const MainPage = ({ nickname, onLoginClick, onSignUpClick, onLogoutClick, onWriteClick }: {
   nickname: string | null;
@@ -17,7 +18,7 @@ const MainPage = ({ nickname, onLoginClick, onSignUpClick, onLogoutClick, onWrit
         onWriteClick={onWriteClick}
       />
       <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: '32px 0 0 0', boxSizing: 'border-box', gap: 24 }}>
-        {/* 일기쓰기 폼은 모달로 이동 */}
+        <DiaryList />
       </main>
     </div>
   );
