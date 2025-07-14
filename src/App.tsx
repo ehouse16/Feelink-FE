@@ -6,6 +6,7 @@ import SignUpForm from './components/SignUpForm';
 import DiaryWriteForm from './components/DiaryWriteForm';
 import { logOut } from './api/member';
 import DiaryDetailPage from './pages/DiaryDetailPage';
+import MyDiaryPage from './pages/MyDiaryPage';
 
 function AppRoutes() {
   const [nickname, setNickname] = useState<string | null>(null);
@@ -27,6 +28,10 @@ function AppRoutes() {
     navigate(`/diary/${diaryId}`);
   };
 
+  const handleMyDiaryClick = () => {
+    navigate('/my-diaries');
+  };
+
   return (
     <>
       <Routes>
@@ -39,6 +44,7 @@ function AppRoutes() {
               onSignUpClick={() => setShowSignUp(true)}
               onLogoutClick={handleLogout}
               onWriteClick={() => setShowWrite(true)}
+              onMyDiaryClick={handleMyDiaryClick}
             />
           }
         />
@@ -51,6 +57,20 @@ function AppRoutes() {
               onSignUpClick={() => setShowSignUp(true)}
               onLogoutClick={handleLogout}
               onWriteClick={() => setShowWrite(true)}
+              onMyDiaryClick={handleMyDiaryClick}
+            />
+          }
+        />
+        <Route
+          path="/my-diaries"
+          element={
+            <MyDiaryPage
+              nickname={nickname}
+              onLoginClick={() => setShowLogin(true)}
+              onSignUpClick={() => setShowSignUp(true)}
+              onLogoutClick={handleLogout}
+              onWriteClick={() => setShowWrite(true)}
+              onMyDiaryClick={handleMyDiaryClick}
             />
           }
         />

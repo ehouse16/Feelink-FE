@@ -10,10 +10,19 @@ const emotionBgColor: Record<string, string> = {
   NEUTRAL: '#E0E0E0', 무감정: '#E0E0E0',
 };
 
-export default function DiaryCard({ diary }: { diary: any }) {
+type DiaryCardProps = {
+  diary: any;
+  isOwner?: boolean;
+  onClick?: () => void;
+};
+
+export default function DiaryCard({ diary, isOwner, onClick }: DiaryCardProps) {
   const badgeBg = emotionBgColor[diary.emotionType] || '#E6F4FF';
   return (
-    <div style={{ background: '#fff', borderRadius: 16, padding: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.03)', marginBottom: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <div
+      style={{ background: '#fff', borderRadius: 16, padding: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.03)', marginBottom: 20, display: 'flex', flexDirection: 'column', gap: 8, cursor: onClick ? 'pointer' : 'default' }}
+      onClick={onClick}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
         <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18 }}>
           <span role="img" aria-label="profile">👤</span>
@@ -27,7 +36,7 @@ export default function DiaryCard({ diary }: { diary: any }) {
       <h3 style={{ fontSize: 20, fontWeight: 700, margin: '8px 0', color: '#f7c9c9' }}>{diary.title}</h3>
       <p style={{ color: '#444', marginBottom: 8, fontSize: 15, minHeight: 24 }}>{diary.content.length > 60 ? diary.content.slice(0, 60) + '...' : diary.content}</p>
       <div style={{ display: 'flex', alignItems: 'center', gap: 20, fontSize: 15, color: '#888', marginTop: 8 }}>
-        <Link to={`/diary/${diary.id}`} style={{ marginLeft: 'auto', color: '#f7c9c9', fontWeight: 500, textDecoration: 'none' }}>더 읽기</Link>
+        <Link to={`/diary/${diary.id}`} style={{ marginLeft: 'auto', color: '#f7c9c9', fontWeight: 500, textDecoration: 'none' }} onClick={e => { e.stopPropagation(); }}>{'더 읽기'}</Link>
       </div>
     </div>
   );

@@ -3,6 +3,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { updateMyDiary, deleteMyDiary } from '../api/diary';
 
+const emotionBgColor: Record<string, string> = {
+  JOY: '#FFF3B0', 행복: '#FFF3B0',
+  SADNESS: '#B0D0FF', 슬픔: '#B0D0FF',
+  ANGER: '#FFB0B0', 분노: '#FFB0B0',
+  ANXIETY: '#FFD6B0', 불안: '#FFD6B0',
+  SURPRISE: '#D6FFB0', 놀람: '#D6FFB0',
+  DISGUST: '#B0FFC2', 혐오: '#B0FFC2',
+  NEUTRAL: '#E0E0E0', 무감정: '#E0E0E0',
+};
+
 function formatDate(dateString: string) {
   const d = new Date(dateString);
   if (isNaN(d.getTime())) return '';
@@ -18,12 +28,13 @@ async function fetchDiary(id: string) {
   return res.json();
 }
 
-export default function DiaryDetailPage({ nickname, onLoginClick, onSignUpClick, onLogoutClick, onWriteClick }: {
+export default function DiaryDetailPage({ nickname, onLoginClick, onSignUpClick, onLogoutClick, onWriteClick, onMyDiaryClick }: {
   nickname: string | null;
   onLoginClick: () => void;
   onSignUpClick: () => void;
   onLogoutClick: () => void;
   onWriteClick: () => void;
+  onMyDiaryClick: () => void;
 }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -102,6 +113,7 @@ export default function DiaryDetailPage({ nickname, onLoginClick, onSignUpClick,
         onSignUpClick={onSignUpClick}
         onLogoutClick={onLogoutClick}
         onWriteClick={onWriteClick}
+        onMyDiaryClick={onMyDiaryClick}
       />
       {loading ? (
         <div style={{ textAlign: 'center', marginTop: 80 }}>로딩 중...</div>
@@ -109,10 +121,14 @@ export default function DiaryDetailPage({ nickname, onLoginClick, onSignUpClick,
         <div style={{ color: 'red', textAlign: 'center', marginTop: 80 }}>{error}</div>
       ) : diary ? (
         <div style={{ maxWidth: 600, margin: '60px auto', background: '#fff', borderRadius: 16, padding: 32, boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-          <h2 style={{ color: '#f7c9c9', marginBottom: 16 }}>{diary.title}</h2>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <h2 style={{ color: '#f7c9c9', margin: 0 }}>{diary.title}</h2>
+            <span style={{ background: emotionBgColor[diary.emotionType] || '#E6F4FF', color: '#222', borderRadius: 8, padding: '4px 16px', fontSize: 15, fontWeight: 600, marginLeft: 16 }}>
+              {diary.emotionType}
+            </span>
+          </div>
           <div style={{ color: '#888', marginBottom: 8 }}>작성자: {diary.nickName}</div>
           <div style={{ color: '#888', marginBottom: 12 }}>작성일: {formatDate(diary.createdAt)}</div>
-          <div style={{ color: '#f7c9c9', fontWeight: 600, marginBottom: 20 }}>감정: {diary.emotionType}</div>
           <div style={{ color: '#222', fontSize: 17, whiteSpace: 'pre-line', marginBottom: 24 }}>{diary.content}</div>
           {isOwner && (
             <div style={{ display: 'flex', gap: 12 }}>
